@@ -65,6 +65,7 @@
 #define GPIO_BASE                (BCM2708_PERI_BASE + 0x200000) /* GPIO */
 #define UART0_BASE               (BCM2708_PERI_BASE + 0x201000)	/* Uart 0 */
 #define MMCI0_BASE               (BCM2708_PERI_BASE + 0x202000) /* MMC interface */
+#define PCM_BASE                 (BCM2708_PERI_BASE + 0x203000) /* PCM/I2S Audo Interface*/
 #define SPI0_BASE		 (BCM2708_PERI_BASE + 0x204000) /* SPI0 */
 #define BSC0_BASE		 (BCM2708_PERI_BASE + 0x205000) /* BSC0 I2C/TWI */
 #define UART1_BASE               (BCM2708_PERI_BASE + 0x215000) /* Uart 1 */

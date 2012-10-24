@@ -53,6 +53,7 @@
 #include <mach/dma.h>
 #include <mach/vcio.h>
 #include <mach/system.h>
+#include <mach/pcm_audio.h>
 
 #include "bcm2708.h"
 #include "armctrl.h"
@@ -108,6 +109,14 @@ static struct map_desc bcm2708_io_desc[] __initdata = {
 	 .pfn = __phys_to_pfn(MMCI0_BASE),
 	 .length = SZ_4K,
 	 .type = MT_DEVICE},
+#endif
+#ifdef CONFIG_BCM2708_PCM
+	{
+	 .virtual = IO_ADDRESS(PCM_BASE),
+	 .pfn = __phys_to_pfn(PCM_BASE),
+	 .length = SZ_4K,
+	 .type = MT_DEVICE
+    },
 #endif
 	{
 	 .virtual = IO_ADDRESS(DMA_BASE),
@@ -270,6 +279,23 @@ static struct platform_device bcm2708_dmaman_device = {
 	.resource = bcm2708_dmaman_resources,
 	.num_resources = ARRAY_SIZE(bcm2708_dmaman_resources),
 };
+
+#ifdef CONFIG_BCM2708_PCM
+static struct resource bcm2708_pcm_resources[] = {
+	{
+	 .start = PCM_BASE,
+	 .end = PCM_BASE + SZ_4K - 1,
+	 .flags = IORESOURCE_MEM,
+	 }
+};
+
+static struct platform_device bcm2708_pcm_device = {
+	.name = BCM_PCM_DRIVER_NAME,
+	.id = -1,		/* Only 1 PCM */
+	.resource = bcm2708_PCM_resources,
+	.num_resources = ARRAY_SIZE(bcm2708_pcm_resources),
+};
+#endif
 
 #ifdef CONFIG_MMC_BCM2708
 static struct resource bcm2708_mci_resources[] = {
@@ -690,6 +716,9 @@ void __init bcm2708_init(void)
 	bcm_register_device(&bcm2708_systemtimer_device);
 #ifdef CONFIG_MMC_BCM2708
 	bcm_register_device(&bcm2708_mci_device);
+#endif
+#ifdef CONFIG_BCM2708_PCM
+    bcm_register_device(&bcm2708_pcm_device);
 #endif
 	bcm_register_device(&bcm2708_fb_device);
 	if (!fiq_fix_enable)
