@@ -5,6 +5,7 @@
 obj-$(CONFIG_MACH_BCM2708) 	+= clock.o bcm2708.o armctrl.o vcio.o power.o dma.o delay.o
 obj-$(CONFIG_BCM2708_GPIO)	+= bcm2708_gpio.o
 obj-$(CONFIG_BCM2708_VCMEM)	+= vc_mem.o
-obj-$(CONFIG_BCM2708_PCM)	+= pcm_audio.o
+obj-$(CONFIG_BCM2708_PCM)	+= bcm2708_pcm_audio.o
+
 
 
