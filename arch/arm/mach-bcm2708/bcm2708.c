@@ -59,6 +59,8 @@
 #include "armctrl.h"
 #include "clock.h"
 
+#define CONFIG_BCM2708_PCM 1
+
 /* Effectively we have an IOMMU (ARM<->VideoCore map) that is set up to
  * give us IO access only to 64Mbytes of physical memory (26 bits).  We could
  * represent this window by setting our dmamasks to 26 bits but, in fact
@@ -280,6 +282,7 @@ static struct platform_device bcm2708_dmaman_device = {
 	.num_resources = ARRAY_SIZE(bcm2708_dmaman_resources),
 };
 
+
 #ifdef CONFIG_BCM2708_PCM
 static struct resource bcm2708_pcm_resources[] = {
 	{
@@ -289,11 +292,17 @@ static struct resource bcm2708_pcm_resources[] = {
 	 }
 };
 
+static u64 pcm_dmamask = DMA_BIT_MASK(DMA_MASK_BITS_COMMON);
+
 static struct platform_device bcm2708_pcm_device = {
 	.name = BCM_PCM_DRIVER_NAME,
 	.id = -1,		/* Only 1 PCM */
-	.resource = bcm2708_PCM_resources,
+	.resource = bcm2708_pcm_resources,
 	.num_resources = ARRAY_SIZE(bcm2708_pcm_resources),
+	.dev = {
+		.dma_mask = &pcm_dmamask,
+		.coherent_dma_mask = DMA_BIT_MASK(DMA_MASK_BITS_COMMON),
+		},
 };
 #endif
 
